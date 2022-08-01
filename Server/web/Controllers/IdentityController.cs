@@ -16,7 +16,8 @@ public class IdentityController : ApiController
     private readonly UserManager<ApplicationUser> userManager;
     private readonly IOptions<ApplicationSettings> applicationSettings;
 
-    public IdentityController(UserManager<ApplicationUser> userManager, IOptions<ApplicationSettings> applicationSettings)
+    public IdentityController(UserManager<ApplicationUser> userManager,
+        IOptions<ApplicationSettings> applicationSettings)
     {
         this.userManager = userManager;
         this.applicationSettings = applicationSettings;
@@ -41,7 +42,7 @@ public class IdentityController : ApiController
     }
 
     [Route(nameof(Login))]
-    public async Task<ActionResult<string>> Login(LoginUserRequestModel model)
+    public async Task<ActionResult<object>> Login(LoginUserRequestModel model)
     {
         var user = await this.userManager.FindByNameAsync(model.UserName);
         if (user is null)
@@ -54,7 +55,7 @@ public class IdentityController : ApiController
         {
             return this.Unauthorized();
         }
-        
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(this.applicationSettings.Value.Secret);
 
@@ -65,12 +66,13 @@ public class IdentityController : ApiController
                 new Claim(ClaimTypes.Name, user.Id.ToString())
             }),
             Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var encryptedToken = tokenHandler.WriteToken(token);
 
-        return encryptedToken;
+        return new { Token = encryptedToken };
     }
 }
