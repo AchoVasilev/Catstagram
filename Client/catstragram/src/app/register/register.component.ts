@@ -3,16 +3,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class LoginComponent implements OnInit {
-  loginForm: FormGroup
+export class RegisterComponent implements OnInit {
+  registerForm: FormGroup
 
   constructor(private fb: FormBuilder, private authService: AuthenticationService) {
-    this.loginForm = this.fb.group({
+    this.registerForm = this.fb.group({
       'username': ['', [Validators.required]],
+      'email': ['', [Validators.required]],
       'password': ['', [Validators.required]]
     });
   }
@@ -20,16 +21,20 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login() {
-    this.authService.login(this.loginForm.value)
+  register() {
+    this.authService.register(this.registerForm.value)
       .subscribe(data => console.log(data));
   }
 
   get username() {
-    return this.loginForm.get('username');
+    return this.registerForm.get('username');
+  }
+
+  get email() {
+    return this.registerForm.get('email');
   }
 
   get password() {
-    return this.loginForm.get('password');
+    return this.registerForm.get('password');
   }
 }
