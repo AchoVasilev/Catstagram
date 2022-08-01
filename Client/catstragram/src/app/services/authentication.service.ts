@@ -7,16 +7,24 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private loginPath: string = environment.apiUrl + '/identity' + '/login';
-  private registerPath: string = environment.apiUrl + '/identity' + '/register';
+  private loginPath: string = environment.apiUrl + 'identity/login';
+  private registerPath: string = environment.apiUrl + 'identity/register';
 
   constructor(private httpClient: HttpClient) { }
 
-  login(data): Observable<any> {
+  login(data: any): Observable<any> {
     return this.httpClient.post(this.loginPath, data);
   }
 
-  register(data): Observable<any> {
+  register(data: any): Observable<any> {
     return this.httpClient.post(this.registerPath, data);
+  }
+
+  saveToken(token: any) {
+    localStorage.setItem('token', token);
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
   }
 }
