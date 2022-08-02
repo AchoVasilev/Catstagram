@@ -2,6 +2,7 @@ namespace web.Features.Cats;
 
 using Data;
 using Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 public class CatService : ICatService
 {
@@ -26,4 +27,15 @@ public class CatService : ICatService
 
         return cat.Id;
     }
+
+    public async Task<IEnumerable<CatListingResponseModel>> ByUser(string userId)
+        => await this.data.Cats
+            .Where(x => x.UserId == userId)
+            .Select(c => new CatListingResponseModel()
+            {
+                Id = c.Id,
+                ImageUrl = c.ImageUrl
+            })
+            .AsNoTracking()
+            .ToListAsync();
 }

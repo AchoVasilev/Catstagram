@@ -22,4 +22,14 @@ public class CatsController : ApiController
 
         return this.Created(nameof(this.Create), catId);
     }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IEnumerable<CatListingResponseModel>> Mine()
+    {
+        var userId = this.User.GetId();
+        var cats = await this.catService.ByUser(userId);
+
+        return cats;
+    }
 }
