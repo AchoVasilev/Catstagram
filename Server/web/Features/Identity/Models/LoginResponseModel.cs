@@ -1,4 +1,4 @@
-namespace web.Features.Identity;
+namespace web.Features.Identity.Models;
 
 public class LoginResponseModel
 {

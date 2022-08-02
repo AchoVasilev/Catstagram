@@ -3,8 +3,10 @@ namespace web.Features.Cats;
 using Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using web.Infrastructure;
 
+[Authorize]
 public class CatsController : ApiController
 {
     private readonly ICatService catService;
@@ -12,9 +14,8 @@ public class CatsController : ApiController
     public CatsController(ICatService catService) 
         => this.catService = catService;
 
-    [Authorize]
     [HttpPost]
-    public async Task<ActionResult<int>> Create(CreateCatRequestModel model)
+    public async Task<ActionResult<int>> Create(CreateCatModel model)
     {
         var userId = this.User.GetId();
 
@@ -23,13 +24,24 @@ public class CatsController : ApiController
         return this.Created(nameof(this.Create), catId);
     }
 
-    [Authorize]
     [HttpGet]
-    public async Task<IEnumerable<CatListingResponseModel>> Mine()
+    public async Task<IEnumerable<CatListingModel>> Mine()
     {
         var userId = this.User.GetId();
         var cats = await this.catService.ByUser(userId);
 
         return cats;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<CatDetailsModel>> Details(int catId)
+    {
+        var cat = await this.catService.Details(catId);
+        if (cat is null)
+        {
+            return this.NotFound();
+        }
+
+        return cat;
     }
 }

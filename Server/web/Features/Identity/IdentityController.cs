@@ -5,6 +5,7 @@ using Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Models;
 using web.Data.Models;
 
 public class IdentityController : ApiController

@@ -1,6 +1,6 @@
-namespace web.Features.Cats;
+namespace web.Features.Cats.Models;
 
-public class CatListingResponseModel
+public class CatListingModel
 {
     public int Id { get; set; }
     

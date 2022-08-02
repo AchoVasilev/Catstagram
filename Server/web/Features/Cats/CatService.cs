@@ -3,6 +3,7 @@ namespace web.Features.Cats;
 using Data;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Models;
 
 public class CatService : ICatService
 {
@@ -13,7 +14,7 @@ public class CatService : ICatService
         this.data = data;
     }
 
-    public async Task<int> Create(string userId, CreateCatRequestModel model)
+    public async Task<int> Create(string userId, CreateCatModel model)
     {
         var cat = new Cat()
         {
@@ -28,14 +29,28 @@ public class CatService : ICatService
         return cat.Id;
     }
 
-    public async Task<IEnumerable<CatListingResponseModel>> ByUser(string userId)
+    public async Task<IEnumerable<CatListingModel>> ByUser(string userId)
         => await this.data.Cats
             .Where(x => x.UserId == userId)
-            .Select(c => new CatListingResponseModel()
+            .Select(c => new CatListingModel()
             {
                 Id = c.Id,
                 ImageUrl = c.ImageUrl
             })
             .AsNoTracking()
             .ToListAsync();
+
+    public async Task<CatDetailsModel> Details(int catId)
+        => await this.data.Cats
+            .Where(x => x.Id == catId)
+            .Select(x => new CatDetailsModel()
+            {
+                Id = x.Id,
+                Description = x.Description,
+                ImageUrl = x.ImageUrl,
+                UserId = x.UserId,
+                UserName = x.User.UserName
+            })
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
 }
