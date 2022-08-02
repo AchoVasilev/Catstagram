@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Cat } from '../models/cat';
@@ -13,8 +13,6 @@ export class CatService {
   constructor(private httpClient: HttpClient, private authService: AuthenticationService) { }
 
   create(data: any): Observable<Cat> {
-    let headers = new HttpHeaders();
-    headers = headers.set('Authorization', `Bearer ${this.authService.getToken()}`);
-    return this.httpClient.post<Cat>(this.path, data, { headers });
+    return this.httpClient.post<Cat>(this.path, data);
   }
 }
