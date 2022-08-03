@@ -12,10 +12,20 @@ export class ListCatsComponent implements OnInit {
   constructor(private catService: CatService) { }
 
   ngOnInit(): void {
+    this.fetchCats();
+  }
+
+  deleteCat(id) {
+    this.catService.deleteCat(id)
+      .subscribe(res => {
+        this.fetchCats();
+      });
+  }
+
+  fetchCats() {
     this.catService.getCats()
       .subscribe(data => {
         this.cats = data;
-      })
+      });
   }
-
 }
