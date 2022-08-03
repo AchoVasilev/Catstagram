@@ -15,4 +15,8 @@ export class CatService {
   create(data: any): Observable<Cat> {
     return this.httpClient.post<Cat>(this.path, data);
   }
+
+  getCats(): Observable<Cat[]> {
+    return this.httpClient.get<Cat[]>(this.path);
+  }
 }
