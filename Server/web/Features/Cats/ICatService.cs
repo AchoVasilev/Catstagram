@@ -8,6 +8,8 @@ public interface ICatService
 
     Task<bool> Update(int id, string description, string userId);
 
+    Task<bool> Delete(int id, string userId);
+
     Task<IEnumerable<CatListingModel>> ByUser(string userId);
 
     Task<CatDetailsModel> Details(int catId);

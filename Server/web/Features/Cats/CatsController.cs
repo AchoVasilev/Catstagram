@@ -5,7 +5,7 @@ using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
-using web.Infrastructure;
+using static Infrastructure.WebConstants;
 
 [Authorize]
 public class CatsController : ApiController
@@ -35,7 +35,7 @@ public class CatsController : ApiController
     }
 
     [HttpGet]
-    [Route("{id}")]
+    [Route(RouteIdTemplate)]
     public async Task<ActionResult<CatDetailsModel>> Details(int id) 
         => await this.catService.Details(id);
 
@@ -46,6 +46,21 @@ public class CatsController : ApiController
         var updated = await this.catService.Update(cat.Id, cat.Description, userId);
 
         if (!updated)
+        {
+            return this.BadRequest();
+        }
+
+        return this.Ok();
+    }
+
+    [HttpDelete]
+    [Route(RouteIdTemplate)]
+    public async Task<ActionResult> Delete(int id)
+    {
+        var userId = this.User.GetId();
+
+        var deleted = await this.catService.Delete(id, userId);
+        if (!deleted)
         {
             return this.BadRequest();
         }
