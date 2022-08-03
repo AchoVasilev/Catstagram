@@ -1,4 +1,4 @@
-namespace web.Infrastructure;
+namespace web.Infrastructure.Extensions;
 
 public static class ConfigurationExtensions
 {

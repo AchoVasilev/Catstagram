@@ -1,6 +1,7 @@
 namespace web.Features.Cats;
 
 using Controllers;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -34,14 +35,21 @@ public class CatsController : ApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<CatDetailsModel>> Details(int catId)
+    [Route("{id}")]
+    public async Task<ActionResult<CatDetailsModel>> Details(int id) 
+        => await this.catService.Details(id);
+
+    [HttpPut]
+    public async Task<ActionResult> Update(UpdateCatModel cat)
     {
-        var cat = await this.catService.Details(catId);
-        if (cat is null)
+        var userId = this.User.GetId();
+        var updated = await this.catService.Update(cat.Id, cat.Description, userId);
+
+        if (!updated)
         {
-            return this.NotFound();
+            return this.BadRequest();
         }
 
-        return cat;
+        return this.Ok();
     }
 }

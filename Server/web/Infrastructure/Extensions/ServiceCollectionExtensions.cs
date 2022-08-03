@@ -1,15 +1,16 @@
-namespace web.Infrastructure;
+namespace web.Infrastructure.Extensions;
 
 using System.Text;
-using Data;
-using Data.Models;
-using Features.Cats;
-using Features.Identity;
+using Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using web.Data;
+using web.Data.Models;
+using web.Features.Cats;
+using web.Features.Identity;
 
 public static class ServiceCollectionExtensions
 {
@@ -69,4 +70,7 @@ public static class ServiceCollectionExtensions
         {
             c.SwaggerDoc("v1", new OpenApiInfo() {Title = "Catstagram API", Version = "v1"});
         });
+
+    public static void AddApiControllers(this IServiceCollection services)
+        => services.AddControllers(options => options.Filters.Add<ModelOrNotFoundActionFilter>());
 }

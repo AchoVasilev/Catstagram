@@ -1,4 +1,6 @@
 using web.Infrastructure;
+using web.Infrastructure.Extensions;
+using web.Infrastructure.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +13,8 @@ builder.Services
     .AddIdentity()
     .AddJwtAuthentication(appSettings)
     .AddApplicationServices()
-    .AddControllers();
+    .AddSwagger()
+    .AddApiControllers();
 
 var app = builder.Build();
 

@@ -29,6 +29,23 @@ public class CatService : ICatService
         return cat.Id;
     }
 
+    public async Task<bool> Update(int id, string description, string userId)
+    {
+        var cat = await this.data.Cats
+            .FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+
+        if (cat is null)
+        {
+            return false;
+        }
+
+        cat.Description = description;
+
+        await this.data.SaveChangesAsync();
+
+        return true;
+    }
+
     public async Task<IEnumerable<CatListingModel>> ByUser(string userId)
         => await this.data.Cats
             .Where(x => x.UserId == userId)

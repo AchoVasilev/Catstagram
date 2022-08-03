@@ -2,13 +2,11 @@ namespace web.Features.Cats.Models;
 
 using System.ComponentModel.DataAnnotations;
 using static Data.Validation.Cat;
-
-public class CreateCatModel
+public class UpdateCatModel
 {
+    public int Id { get; set; }
+    
     [Required]
     [MaxLength(DescriptionMaxLength)]
     public string Description { get; set; }
-    
-    [Required]
-    public string ImageUrl { get; set; }
 }
