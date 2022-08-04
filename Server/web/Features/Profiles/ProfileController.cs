@@ -21,4 +21,19 @@ public class ProfileController : ApiController
     [Authorize]
     public async Task<ActionResult<ProfileModel>> Profile()
         => await this.profileService.ById(this.userService.GetUserId());
+
+    [HttpPut]
+    [Authorize]
+    public async Task<ActionResult> Update(UpdateProfileModel model)
+    {
+        var userId = this.userService.GetUserId();
+
+        var result = await this.profileService.Update(userId, model);
+        if (!result.Succeeded)
+        {
+            return this.BadRequest(result.Error);
+        }
+
+        return this.Ok();
+    }
 }

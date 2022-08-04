@@ -44,10 +44,11 @@ public class CatsController : ApiController
         => await this.catService.Details(id);
 
     [HttpPut]
-    public async Task<ActionResult> Update(UpdateCatModel cat)
+    [Route(RouteIdTemplate)]
+    public async Task<ActionResult> Update(int id, UpdateCatModel cat)
     {
         var userId = this.currentUserService.GetUserId();
-        var updated = await this.catService.Update(cat.Id, cat.Description, userId);
+        var updated = await this.catService.Update(id, cat.Description, userId);
 
         if (!updated)
         {
