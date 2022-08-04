@@ -1,7 +1,7 @@
 namespace web.Infrastructure.Extensions;
 
 using Microsoft.EntityFrameworkCore;
-using web.Data;
+using Data;
 
 public static class ApplicationBuilderExtensions
 {

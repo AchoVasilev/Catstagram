@@ -39,6 +39,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(c => c.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Entity<ApplicationUser>()
+            .OwnsOne(u => u.Profile);
+
         base.OnModelCreating(builder);
     }
 

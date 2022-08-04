@@ -1,6 +1,7 @@
 namespace web.Infrastructure.Extensions;
 
 using System.Text;
+using Features.Profiles;
 using Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -8,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services;
-using web.Data;
-using web.Data.Models;
-using web.Features.Cats;
-using web.Features.Identity;
+using Data;
+using Data.Models;
+using Features.Cats;
+using Features.Identity;
 
 public static class ServiceCollectionExtensions
 {
@@ -63,8 +64,9 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         => services
-            .AddTransient<IIdentityService, IdentityService>()
             .AddScoped<ICurrentUserService, CurrentUserService>()
+            .AddTransient<IIdentityService, IdentityService>()
+            .AddTransient<IProfileService, ProfileService>()
             .AddTransient<ICatService, CatService>();
 
     public static IServiceCollection AddSwagger(this IServiceCollection services)

@@ -337,6 +337,49 @@ namespace web.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("web.Data.Models.ApplicationUser", b =>
+                {
+                    b.OwnsOne("web.Data.Models.Profile", "Profile", b1 =>
+                        {
+                            b1.Property<string>("ApplicationUserId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("Biography")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("nvarchar(150)");
+
+                            b1.Property<int>("Gender")
+                                .HasColumnType("int");
+
+                            b1.Property<bool>("IsPrivate")
+                                .HasColumnType("bit");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("nvarchar(40)");
+
+                            b1.Property<string>("ProfilePhotoUrl")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("WebSite")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("ApplicationUserId");
+
+                            b1.ToTable("AspNetUsers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ApplicationUserId");
+                        });
+
+                    b.Navigation("Profile")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("web.Data.Models.Cat", b =>
                 {
                     b.HasOne("web.Data.Models.ApplicationUser", "User")
