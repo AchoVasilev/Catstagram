@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Services;
 using web.Data;
 using web.Data.Models;
 using web.Features.Cats;
@@ -63,6 +64,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         => services
             .AddTransient<IIdentityService, IdentityService>()
+            .AddScoped<ICurrentUserService, CurrentUserService>()
             .AddTransient<ICatService, CatService>();
 
     public static IServiceCollection AddSwagger(this IServiceCollection services)

@@ -2,8 +2,9 @@ namespace web.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Base;
 using static Data.Validation.Cat;
-public class Cat
+public class Cat : DeletableEntity
 {
     public int Id { get; set; }
     
