@@ -9,6 +9,7 @@
                         card's
                         content.</p>
                     <a routerLink="/cats/{{cat.id}}" class="btn btn-primary">See cat info</a>
+                    <button class="btn btn-warning" (click)="editCat(cat.id)">Edit</button>
                     <button class="btn btn-danger" (click)="deleteCat(cat.id)">Delete</button>
                 </div>
             </div>

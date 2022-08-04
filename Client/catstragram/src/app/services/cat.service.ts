@@ -20,11 +20,15 @@ export class CatService {
     return this.httpClient.get<Cat[]>(this.path);
   }
 
-  getCat(id): Observable<Cat> {
+  getCat(id: any): Observable<Cat> {
     return this.httpClient.get<Cat>(this.path + `/${id}`);
   }
 
-  deleteCat(id) {
+  editCat(data: any) {
+    return this.httpClient.put(this.path, data);
+  }
+
+  deleteCat(id: any) {
     return this.httpClient.delete(this.path + `/${id}`);
   }
 }

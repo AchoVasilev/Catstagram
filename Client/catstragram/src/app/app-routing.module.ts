@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreatepostComponent } from './createpost/createpost.component';
 import { DetailsCatComponent } from './details-cat/details-cat.component';
+import { EditComponent } from './edit/edit.component';
 import { ListCatsComponent } from './list-cats/list-cats.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'create', component: CreatepostComponent, canActivate: [AuthGuardService] },
   { path: 'cats', component: ListCatsComponent, canActivate: [AuthGuardService] },
   { path: 'cats/:id', component: DetailsCatComponent, canActivate: [AuthGuardService] },
+  { path: 'cats/:id/edit', component: EditComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Cat } from '../models/cat';
 import { CatService } from '../services/cat.service';
 
@@ -9,7 +10,7 @@ import { CatService } from '../services/cat.service';
 })
 export class ListCatsComponent implements OnInit {
   cats: Cat[];
-  constructor(private catService: CatService) { }
+  constructor(private catService: CatService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchCats();
@@ -20,6 +21,10 @@ export class ListCatsComponent implements OnInit {
       .subscribe(res => {
         this.fetchCats();
       });
+  }
+
+  editCat(id) {
+    this.router.navigate([`cats/${id}/edit`]);
   }
 
   fetchCats() {
