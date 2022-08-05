@@ -1,0 +1,20 @@
+namespace web.Data.Models;
+
+using System.ComponentModel.DataAnnotations;
+
+public class Follow
+{
+    public int Id { get; set; }
+    
+    [Required]
+    public string UserId { get; set; }
+    
+    public ApplicationUser User { get; set; }
+    
+    [Required]
+    public string FollowerId { get; set; }
+    
+    public ApplicationUser Follower { get; set; }
+    
+    public bool IsApproved { get; set; }
+}

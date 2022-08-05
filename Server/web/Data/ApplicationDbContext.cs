@@ -16,6 +16,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Cat> Cats { get; set; }
     
     public DbSet<Profile> Profiles { get; set; }
+    
+    public DbSet<Follow> Follows { get; set; }
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
@@ -45,6 +47,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(u => u.Profile)
             .WithOne(p => p.User)
             .HasForeignKey<Profile>(u => u.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Follow>()
+            .HasOne(f => f.User)
+            .WithMany(u => u.Follows)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Follow>()
+            .HasOne(f => f.Follower)
+            .WithMany(u => u.Followed)
             .OnDelete(DeleteBehavior.Restrict);
 
         base.OnModelCreating(builder);

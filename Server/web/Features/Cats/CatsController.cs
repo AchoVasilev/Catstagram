@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using static Infrastructure.WebConstants;
 
-[Authorize]
 public class CatsController : ApiController
 {
     private readonly ICatService catService;

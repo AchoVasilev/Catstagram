@@ -2,12 +2,14 @@ namespace web.Features.Identity;
 
 using System.Net;
 using Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Models;
 using web.Data.Models;
 
+[AllowAnonymous]
 public class IdentityController : ApiController
 {
     private readonly UserManager<ApplicationUser> userManager;

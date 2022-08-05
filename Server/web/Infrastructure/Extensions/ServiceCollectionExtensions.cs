@@ -1,6 +1,7 @@
 namespace web.Infrastructure.Extensions;
 
 using System.Text;
+using Controllers.Follows;
 using Features.Profiles;
 using Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -67,7 +68,8 @@ public static class ServiceCollectionExtensions
             .AddScoped<ICurrentUserService, CurrentUserService>()
             .AddTransient<IIdentityService, IdentityService>()
             .AddTransient<IProfileService, ProfileService>()
-            .AddTransient<ICatService, CatService>();
+            .AddTransient<ICatService, CatService>()
+            .AddTransient<IFollowService, FollowService>();
 
     public static IServiceCollection AddSwagger(this IServiceCollection services)
         => services.AddSwaggerGen(c =>

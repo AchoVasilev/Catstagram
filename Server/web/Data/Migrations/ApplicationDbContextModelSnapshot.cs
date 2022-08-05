@@ -290,6 +290,34 @@ namespace web.Data.Migrations
                     b.ToTable("Cats");
                 });
 
+            modelBuilder.Entity("web.Data.Models.Follow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("FollowerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Follows");
+                });
+
             modelBuilder.Entity("web.Data.Models.Profile", b =>
                 {
                     b.Property<int>("Id")
@@ -396,6 +424,25 @@ namespace web.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("web.Data.Models.Follow", b =>
+                {
+                    b.HasOne("web.Data.Models.ApplicationUser", "Follower")
+                        .WithMany("Followed")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("web.Data.Models.ApplicationUser", "User")
+                        .WithMany("Follows")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("web.Data.Models.Profile", b =>
                 {
                     b.HasOne("web.Data.Models.ApplicationUser", "User")
@@ -410,6 +457,10 @@ namespace web.Data.Migrations
             modelBuilder.Entity("web.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Cats");
+
+                    b.Navigation("Followed");
+
+                    b.Navigation("Follows");
 
                     b.Navigation("Profile")
                         .IsRequired();

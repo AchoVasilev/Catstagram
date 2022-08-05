@@ -16,6 +16,10 @@ public class ApplicationUser : IdentityUser, IEntity
     public DateTime? ModifiedOn { get; set; }
     
     public string ModifiedBy { get; set; }
+
+    public IEnumerable<Follow> Follows { get; } = new HashSet<Follow>();
     
+    public IEnumerable<Follow> Followed { get; } = new HashSet<Follow>();
+
     public IEnumerable<Cat> Cats { get; } = new HashSet<Cat>();
 }

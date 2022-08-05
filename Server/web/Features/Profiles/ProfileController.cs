@@ -18,12 +18,10 @@ public class ProfileController : ApiController
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<ActionResult<ProfileModel>> Profile()
         => await this.profileService.ById(this.userService.GetUserId());
 
     [HttpPut]
-    [Authorize]
     public async Task<ActionResult> Update(UpdateProfileModel model)
     {
         var userId = this.userService.GetUserId();
