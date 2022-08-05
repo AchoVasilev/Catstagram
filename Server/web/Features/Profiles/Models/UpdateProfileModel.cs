@@ -1,7 +1,6 @@
 namespace web.Features.Profiles.Models;
 
 using System.ComponentModel.DataAnnotations;
-using Data.Models;
 using static Data.Validation.User;
 
 public class UpdateProfileModel

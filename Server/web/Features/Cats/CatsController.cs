@@ -1,9 +1,7 @@
 namespace web.Features.Cats;
 
 using Controllers;
-using Infrastructure.Extensions;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using static Infrastructure.WebConstants;

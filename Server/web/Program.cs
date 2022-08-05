@@ -1,6 +1,4 @@
-using web.Infrastructure;
 using web.Infrastructure.Extensions;
-using web.Infrastructure.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 

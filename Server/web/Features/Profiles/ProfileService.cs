@@ -13,20 +13,37 @@ public class ProfileService : IProfileService
     public ProfileService(ApplicationDbContext data)
         => this.data = data;
 
-    public async Task<ProfileModel> ById(string userId)
-        => await this.data.Users
-            .Where(x => x.Id == userId)
+    public async Task<ProfileModel> ById(string userId, bool allInformation = false)
+    {
+        var query = this.data.Users
+            .Where(x => x.Id == userId);
+
+        if (allInformation)
+        {
+            return await query
+                .Select(x => new PublicProfileModel()
+                {
+                    Biography = x.Profile.Biography,
+                    Gender = x.Profile.Gender.ToString(),
+                    IsPrivate = x.Profile.IsPrivate,
+                    Name = x.Profile.Name,
+                    ProfilePhotoUrl = x.Profile.ProfilePhotoUrl,
+                    UserName = x.UserName,
+                    WebSite = x.Profile.WebSite
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        return await query
             .Select(x => new ProfileModel()
             {
-                Biography = x.Profile.Biography,
-                Gender = x.Profile.Gender.ToString(),
                 IsPrivate = x.Profile.IsPrivate,
                 Name = x.Profile.Name,
                 ProfilePhotoUrl = x.Profile.ProfilePhotoUrl,
                 UserName = x.UserName,
-                WebSite = x.Profile.WebSite
             })
             .FirstOrDefaultAsync();
+    }
 
     public async Task<Result> Update(string userId, UpdateProfileModel model)
     {
@@ -58,6 +75,10 @@ public class ProfileService : IProfileService
 
         return true;
     }
+
+    public async Task<bool> IsPrivate(string userId)
+        => await this.data.Profiles
+            .AnyAsync(x => x.UserId == userId && x.IsPrivate);
 
     private void ChangeProfile(UpdateProfileModel model, Profile profile)
     {
