@@ -14,6 +14,7 @@ using Data;
 using Data.Models;
 using Features.Cats;
 using Features.Identity;
+using Features.Search;
 
 public static class ServiceCollectionExtensions
 {
@@ -69,6 +70,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<IIdentityService, IdentityService>()
             .AddTransient<IProfileService, ProfileService>()
             .AddTransient<ICatService, CatService>()
+            .AddTransient<ISearchService, SearchService>()
             .AddTransient<IFollowService, FollowService>();
 
     public static IServiceCollection AddSwagger(this IServiceCollection services)
