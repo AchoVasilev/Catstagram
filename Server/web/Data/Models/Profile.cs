@@ -5,6 +5,13 @@ using static Validation.User;
 
 public class Profile
 {
+    public int Id { get; set; }
+    
+    [Required]
+    public string UserId { get; set; }
+    
+    public ApplicationUser User { get; set; }
+    
     [MaxLength(MaxNameLength)] public string Name { get; set; }
 
     public string ProfilePhotoUrl { get; set; }

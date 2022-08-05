@@ -14,6 +14,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         => this.currentUserService = currentUserService;
 
     public DbSet<Cat> Cats { get; set; }
+    
+    public DbSet<Profile> Profiles { get; set; }
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
@@ -40,7 +42,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<ApplicationUser>()
-            .OwnsOne(u => u.Profile);
+            .HasOne(u => u.Profile)
+            .WithOne(p => p.User)
+            .HasForeignKey<Profile>(u => u.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         base.OnModelCreating(builder);
     }

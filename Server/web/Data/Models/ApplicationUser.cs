@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 
 public class ApplicationUser : IdentityUser, IEntity
 {
+    public string ProfileId { get; set; }
+    
     public Profile Profile { get; set; }
     
     public DateTime CreatedOn { get; set; }

@@ -30,11 +30,15 @@ public class ProfileService : IProfileService
 
     public async Task<Result> Update(string userId, UpdateProfileModel model)
     {
-        var user = await this.data.Users.FirstOrDefaultAsync(x => x.Id == userId);
+        var user = await this.data.Users
+            .Include(x => x.Profile)
+            .FirstOrDefaultAsync(x => x.Id == userId);
         if (user is null)
         {
             return "User does not exist.";
         }
+
+        user.Profile ??= new Profile();
 
         var result = await this.ChangeProfileEmail(userId, model, user);
         if (!result.Succeeded)
@@ -48,44 +52,44 @@ public class ProfileService : IProfileService
             return false;
         }
 
-        this.ChangeProfile(model, user);
+        this.ChangeProfile(model, user.Profile);
 
         await this.data.SaveChangesAsync();
 
         return true;
     }
 
-    private void ChangeProfile(UpdateProfileModel model, ApplicationUser user)
+    private void ChangeProfile(UpdateProfileModel model, Profile profile)
     {
-        if (user.Profile.Name != model.Name)
+        if (profile.Name != model.Name)
         {
-            user.Profile.Name = model.Name;
+            profile.Name = model.Name;
         }
 
-        if (user.Profile.ProfilePhotoUrl != model.ProfilePhotoUrl)
+        if (profile.ProfilePhotoUrl != model.ProfilePhotoUrl)
         {
-            user.Profile.ProfilePhotoUrl = model.ProfilePhotoUrl;
+            profile.ProfilePhotoUrl = model.ProfilePhotoUrl;
         }
 
-        if (user.Profile.WebSite != model.WebSite)
+        if (profile.WebSite != model.WebSite)
         {
-            user.Profile.WebSite = model.WebSite;
+            profile.WebSite = model.WebSite;
         }
 
-        if (user.Profile.IsPrivate != model.IsPrivate)
+        if (profile.IsPrivate != model.IsPrivate)
         {
-            user.Profile.IsPrivate = model.IsPrivate;
+            profile.IsPrivate = model.IsPrivate;
         }
 
         var gender = Enum.Parse<Gender>(model.Gender);
-        if (user.Profile.Gender != gender)
+        if (profile.Gender != gender)
         {
-            user.Profile.Gender = gender;
+            profile.Gender = gender;
         }
 
-        if (user.Profile.Biography != model.Biography)
+        if (profile.Biography != model.Biography)
         {
-            user.Profile.Biography = model.Biography;
+            profile.Biography = model.Biography;
         }
     }
 

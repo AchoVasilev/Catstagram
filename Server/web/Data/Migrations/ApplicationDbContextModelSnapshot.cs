@@ -211,6 +211,10 @@ namespace web.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfileId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -286,6 +290,50 @@ namespace web.Data.Migrations
                     b.ToTable("Cats");
                 });
 
+            modelBuilder.Entity("web.Data.Models.Profile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Biography")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("ProfilePhotoUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WebSite")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Profiles");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -337,49 +385,6 @@ namespace web.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("web.Data.Models.ApplicationUser", b =>
-                {
-                    b.OwnsOne("web.Data.Models.Profile", "Profile", b1 =>
-                        {
-                            b1.Property<string>("ApplicationUserId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<string>("Biography")
-                                .IsRequired()
-                                .HasMaxLength(150)
-                                .HasColumnType("nvarchar(150)");
-
-                            b1.Property<int>("Gender")
-                                .HasColumnType("int");
-
-                            b1.Property<bool>("IsPrivate")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(40)
-                                .HasColumnType("nvarchar(40)");
-
-                            b1.Property<string>("ProfilePhotoUrl")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("WebSite")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("ApplicationUserId");
-
-                            b1.ToTable("AspNetUsers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ApplicationUserId");
-                        });
-
-                    b.Navigation("Profile")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("web.Data.Models.Cat", b =>
                 {
                     b.HasOne("web.Data.Models.ApplicationUser", "User")
@@ -391,9 +396,23 @@ namespace web.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("web.Data.Models.Profile", b =>
+                {
+                    b.HasOne("web.Data.Models.ApplicationUser", "User")
+                        .WithOne("Profile")
+                        .HasForeignKey("web.Data.Models.Profile", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("web.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Cats");
+
+                    b.Navigation("Profile")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
